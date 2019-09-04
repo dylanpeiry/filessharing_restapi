@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Auth;
 class FilesController extends Controller
 {
     public $successStatus = 200;
+
+    public function index(Request $request){
+        return view('files');
+    }
+
+
     public function get(Request $request)
     {
 
