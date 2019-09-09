@@ -85,7 +85,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <!-- Form Errors -->
+                        <!-- Forms Errors -->
                         <div class="alert alert-danger" v-if="createForm.errors.length > 0">
                             <p class="mb-0"><strong>Whoops!</strong> Something went wrong!</p>
                             <br>
@@ -96,7 +96,7 @@
                             </ul>
                         </div>
 
-                        <!-- Create Client Form -->
+                        <!-- Create Client Forms -->
                         <form role="form">
                             <!-- Name -->
                             <div class="form-group row">
@@ -153,7 +153,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <!-- Form Errors -->
+                        <!-- Forms Errors -->
                         <div class="alert alert-danger" v-if="editForm.errors.length > 0">
                             <p class="mb-0"><strong>Whoops!</strong> Something went wrong!</p>
                             <br>
@@ -164,7 +164,7 @@
                             </ul>
                         </div>
 
-                        <!-- Edit Client Form -->
+                        <!-- Edit Client Forms -->
                         <form role="form">
                             <!-- Name -->
                             <div class="form-group row">

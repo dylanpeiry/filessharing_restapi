@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="modal-body">
-                        <!-- Form Errors -->
+                        <!-- Forms Errors -->
                         <div class="alert alert-danger" v-if="form.errors.length > 0">
                             <p class="mb-0"><strong>Whoops!</strong> Something went wrong!</p>
                             <br>
@@ -79,7 +79,7 @@
                             </ul>
                         </div>
 
-                        <!-- Create Token Form -->
+                        <!-- Create Token Forms -->
                         <form role="form" @submit.prevent="store">
                             <!-- Name -->
                             <div class="form-group row">

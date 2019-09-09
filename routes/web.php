@@ -10,6 +10,7 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -17,7 +18,13 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('files','FilesController@index')->name('files');
-Route::get('profile','ProfileController@index')->name('profile');
-Route::get('admin','AdminController@index')->name('admin');
+Route::get('/files','FilesController@index')->name('files');
+Route::get('/profile','ProfileController@index')->name('profile');
+Route::get('/admin','AdminController@index')->name('admin');
+
+
+Route::get('/files/add','FilesController@viewAdd')->name('files.add');
+Route::post('/files/add','FilesController@add')->name('files.add');
+
+Auth::routes();
 
