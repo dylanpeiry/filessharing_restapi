@@ -9,7 +9,14 @@ class AdminController extends Controller
 {
     public $successStatus = 200;
 
-    public function index(Request $request){
+    public function __construct()
+    {
+        $this->middleware('checkRole:admin');
+    }
+
+    public function index(Request $request)
+    {
         return view('admin');
     }
+
 }

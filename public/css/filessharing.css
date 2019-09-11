@@ -1,0 +1,12 @@
+.deletefile{
+    color: red;
+}
+
+.sharefile{
+    color:green;
+}
+
+.deletefile:hover, .sharefile:hover{
+    color: rgba(0,0,0,0.37);
+    cursor: pointer;
+}

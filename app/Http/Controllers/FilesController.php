@@ -12,9 +12,14 @@ class FilesController extends Controller
 {
     public $successStatus = 200;
 
+    public function __construct()
+    {
+        $this->middleware('checkRole:*');
+    }
+
     public function index(Request $request)
     {
-        return view('files');
+        return view('files', ['files' => $this->getByUser($request)]);
     }
 
     public function viewAdd(FormBuilder $formBuilder)
@@ -34,7 +39,7 @@ class FilesController extends Controller
 
     public function getByUser(Request $request)
     {
-
+        return File::whereIdOwner(Auth::user()->getAuthIdentifier())->get();
     }
 
     public function toggleStatus(Request $request)

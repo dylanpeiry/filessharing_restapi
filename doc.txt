@@ -1,1 +1,3 @@
-https://www.tutsmake.com/create-rest-api-using-passport-laravel-5-8-authentication/
+Based role restriction to pages
+Custom blade function to display status name instead of index
+Custom blade function to format date/time
