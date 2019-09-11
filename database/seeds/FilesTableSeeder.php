@@ -19,6 +19,7 @@ class FilesTableSeeder extends Seeder
                 'size'=>200,
                 'type'=>'.txt',
                 'id_owner'=>'1',
+                'created_at'=>now()
             ],
             [
                 'stored_file_name'=>'file2',
@@ -26,6 +27,7 @@ class FilesTableSeeder extends Seeder
                 'size'=>200,
                 'type'=>'.txt',
                 'id_owner'=>'1',
+                'created_at'=>now()
             ],
             [
                 'stored_file_name'=>'file3',
@@ -33,6 +35,7 @@ class FilesTableSeeder extends Seeder
                 'size'=>200,
                 'type'=>'.txt',
                 'id_owner'=>'1',
+                'created_at'=>now()
             ],
         ]);
     }
