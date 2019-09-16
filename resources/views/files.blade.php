@@ -3,21 +3,73 @@
 @section('content')
     <div class="container">
         <div class="card border border-primary">
-            <div class="card-header bg-primary text-white font-weight-bold">Fichiers publics</div>
+            <div class="card-header bg-primary text-white font-weight-bold">Public files</div>
             <div class="card-body myfiles">
                 <table class="table table-sm">
-                    <div class="alert alert-primary" role="alert">Aucun fichier public trouvé.</div>
+                    @if(count($public_files) == 0)
+                        <div class="alert alert-primary" role="alert">No public files.</div>
+                    @else
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Size</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($public_files as $file)
+                            <tr>
+                                <td>{!! downloadLink($file->file_name . '.' . $file->type,route('files.download',[$file->stored_file_name])) !!}</td>
+                                <td>{!!getStatusName($file->status)!!}</td>
+                                <td>{{formatDate($file->created_at)}}</td>
+                                <td>{{$file->size}}</td>
+                                <td>
+                                    <i class="fas fa-trash deletefile" title="Delete the file"></i>
+                                    &nbsp;
+                                    <i class="fas fa-user-plus sharefile" title="Share the file"></i>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    @endif
                 </table>
             </div>
         </div>
         <br>
         <div class="card border border-warning">
-            <div class="card-header bg-warning font-weight-bold">Fichiers partagés</div>
+            <div class="card-header bg-warning font-weight-bold">Shared Files</div>
             <div class="card-body myfiles">
                 <table class="table table-sm">
-
-                    <div class="alert alert-warning" role="alert">Aucun fichier partagé avec vous.</div>
-
+                    @if(count($shared_files) == 0)
+                        <div class="alert alert-warning" role="alert">No files are shared with you.</div>
+                    @else
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Size</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($shared_files as $file)
+                            <tr>
+                                <td>{!! downloadLink($file->file_name . '.' . $file->type,route('files.download',[$file->stored_file_name])) !!}</td>
+                                <td>{!!getStatusName($file->status)!!}</td>
+                                <td>{{formatDate($file->created_at)}}</td>
+                                <td>{{$file->size}}</td>
+                                <td>
+                                    <i class="fas fa-trash deletefile" title="Delete the file"></i>
+                                    &nbsp;
+                                    <i class="fas fa-user-plus sharefile" title="Share the file"></i>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    @endif
                 </table>
             </div>
         </div>
@@ -29,7 +81,7 @@
             </div>
             <div class="card-body myfiles mf-private">
                 <table class="table table-sm">
-                    @if(empty($files))
+                    @if(count($private_files) == 0)
                         <div class="alert alert-danger" role="alert">You have no files.</div>
                     @else
                         <thead>
@@ -42,10 +94,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($files as $file)
+                        @foreach($private_files as $file)
                             <tr>
-                                <td>{{$file->stored_file_name . $file->type}}</td>
-                                <td>{{getStatusName($file->status)}}</td>
+                                <td>{!! downloadLink($file->file_name . '.' . $file->type,route('files.download',[$file->stored_file_name])) !!}</td>
+                                <td>{!!getStatusName($file->status)!!}</td>
                                 <td>{{formatDate($file->created_at)}}</td>
                                 <td>{{$file->size}}</td>
                                 <td>

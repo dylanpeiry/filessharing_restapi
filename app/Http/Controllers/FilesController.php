@@ -4,66 +4,140 @@ namespace App\Http\Controllers;
 
 use App\File;
 use App\Http\Forms\FileForm;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 use Kris\LaravelFormBuilder\FormBuilder;
+use Symfony\Component\Console\Input\Input;
 
 class FilesController extends Controller
 {
-    public $successStatus = 200;
+    const NOT_FOUND = 404;
+    const STATUS_PRIVATE = 0;
+    const STATUS_SHARED = 1;
+    const STATUS_PUBLIC = 2;
 
     public function __construct()
     {
         $this->middleware('checkRole:*');
     }
 
-    public function index(Request $request)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function index()
     {
-        return view('files', ['files' => $this->getByUser($request)]);
+        $id = Auth::user()->getAuthIdentifier();
+        $private_files = File::all()->where('id_owner','=',$id)->sortByDesc('created_at');
+        $shared_files = File::all()->where('status', '=', self::STATUS_SHARED)->where('id_owner','!=',$id);
+        $public_files = File::all()->where('status', '=', self::STATUS_PUBLIC)->where('id_owner','!=',$id);;
+        return view('files', [
+            'private_files' => $private_files,
+            'shared_files' => $shared_files,
+            'public_files' => $public_files
+        ]);
     }
 
-    public function viewAdd(FormBuilder $formBuilder)
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @param FormBuilder $formBuilder
+     * @return Response
+     */
+    public function create(FormBuilder $formBuilder)
     {
         $form = $formBuilder->create(FileForm::class, [
             'method' => 'POST',
-            'url' => route('files')
+            'url' => route('files.store')
         ]);
-        return view('files/add', compact('form'));
+        return view('files.add', compact('form'));
     }
 
-    public function add(Request $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function store(Request $request)
     {
-        dd($request);
+        $data = $request->all();
+        $file = $request->file('file');
+        $f = new File();
+        $f->stored_file_name = uniqid();
 
+        $f->file_name = $data['fileName'];
+        $f->size = $file->getSize();
+        $f->type = $file->getClientOriginalExtension();
+        $f->id_owner = Auth::user()->getAuthIdentifier();
+        $f->status = $data['status'];
+        $f->save();
+        $file->storeAs('files', $f->stored_file_name);
+        return $this->index();
     }
 
-    public function getByUser(Request $request)
+    /**
+     * Display the specified resource.
+     *
+     * @param File $file
+     * @return Response
+     */
+    public function show(File $file)
     {
-        return File::whereIdOwner(Auth::user()->getAuthIdentifier())->get();
+        //
     }
 
-    public function toggleStatus(Request $request)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param File $file
+     * @return Response
+     */
+    public function edit(File $file)
     {
-
+        //
     }
 
-    public function getName(Request $request)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param Request $request
+     * @param File $file
+     * @return Response
+     */
+    public function update(Request $request, File $file)
     {
-
+        //
     }
 
-    public function getPublics(Request $request)
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param File $file
+     * @return Response
+     */
+    public function destroy(File $file)
     {
-
+        //
     }
 
-    public function delete(Request $request)
+    public function download($storedFilename)
     {
-
-    }
-
-    public function deleteUserFiles(Request $request)
-    {
-
+        if (Storage::disk('files')->exists($storedFilename)) {
+            $fileInfos = File::whereStoredFileName($storedFilename)->get()->first();
+            $fileName = $fileInfos->file_name . '.' . $fileInfos->type;
+            if (Auth::user()->getAuthIdentifier() == $fileInfos->id_owner || $fileInfos->status == self::STATUS_PUBLIC) {
+                return Storage::download('files/' . $storedFilename, $fileName);
+            } else {
+                return abort(self::NOT_FOUND);
+            }
+        } else {
+            return abort(self::NOT_FOUND);
+        }
     }
 }

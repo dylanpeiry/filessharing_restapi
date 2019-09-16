@@ -38,7 +38,7 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav mr-auto">
                     @if((Auth::check()))
-                        <li class="nav-item {{(request()->is('files')) ? 'active':''}}"><a href="{{route('files')}}" class="nav-link"><i class="far fa-file"></i> My files</a></li>
+                        <li class="nav-item {{(request()->is('files')) ? 'active':''}}"><a href="{{route('files.index')}}" class="nav-link"><i class="far fa-file"></i> My files</a></li>
                         @if((Auth::user()->id_role == 2))
                         <li class="nav-item {{(request()->is('admin')) ? 'active':''}}"><a href="{{route('admin')}}" class="nav-link"><i class="fas fa-users-cog"></i> Administration</a></li>
                         @endif
@@ -88,6 +88,8 @@
     <main class="py-4">
         @yield('content')
     </main>
+
+    <div class="modal" id="m_add-file"></div>
 </div>
 </body>
 </html>
