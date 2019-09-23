@@ -19,7 +19,6 @@ class FileForm extends Form
                     '2' => 'Public',
                 ],
                 'selected' => 0,
-            ])
-            ->add('submit', 'submit', ['label' => 'Save form']);
+            ]);
     }
 }

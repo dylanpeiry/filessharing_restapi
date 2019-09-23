@@ -20,7 +20,7 @@
                         </thead>
                         <tbody>
                         @foreach($public_files as $file)
-                            <tr>
+                            <tr id="{{$file->id}}">
                                 <td>{!! downloadLink($file->file_name . '.' . $file->type,route('files.download',[$file->stored_file_name])) !!}</td>
                                 <td>{!!getStatusName($file->status)!!}</td>
                                 <td>{{formatDate($file->created_at)}}</td>
@@ -56,7 +56,7 @@
                         </thead>
                         <tbody>
                         @foreach($shared_files as $file)
-                            <tr>
+                            <tr id="{{$file->id}}">
                                 <td>{!! downloadLink($file->file_name . '.' . $file->type,route('files.download',[$file->stored_file_name])) !!}</td>
                                 <td>{!!getStatusName($file->status)!!}</td>
                                 <td>{{formatDate($file->created_at)}}</td>
@@ -95,7 +95,7 @@
                         </thead>
                         <tbody>
                         @foreach($private_files as $file)
-                            <tr>
+                            <tr id="{{$file->id}}">
                                 <td>{!! downloadLink($file->file_name . '.' . $file->type,route('files.download',[$file->stored_file_name])) !!}</td>
                                 <td>{!!getStatusName($file->status)!!}</td>
                                 <td>{{formatDate($file->created_at)}}</td>

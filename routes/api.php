@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use function foo\func;
 
 /*
@@ -16,6 +17,6 @@ use function foo\func;
 
 Route::prefix('v1')->group(function(){
     Route::group(['middleware' => 'auth:api'], function(){
-        Route::get('files', 'FilesController@get');
+        Route::post('files','FilesController@store');
     });
 });
