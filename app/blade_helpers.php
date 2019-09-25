@@ -24,7 +24,7 @@ if (!function_exists('getStatusName')){
 
 if (!function_exists('formatDate')){
     function formatDate($date){
-        return date("\T\\h\\e d.m.Y \a\\t h:i:s", strtotime($date));
+        return date("\T\\h\\e d.m.Y \a\\t H:i:s", strtotime($date));
     }
 }
 

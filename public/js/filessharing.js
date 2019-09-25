@@ -41,7 +41,7 @@ $(document).ready(function () {
         data.append('file', file);
         axios.post('/api/v1/files', data, {
             headers: {'content-type': 'multipart/form-data'}
-        }).then(response => utils.showFile(response.data));
+        }).then(response => utils.showFile(response.data))
     });
 
     let utils = {

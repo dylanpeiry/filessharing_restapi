@@ -20,8 +20,8 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('/files','FilesController');
-Route::get('/files/download/{storedfilename}','FilesController@download')->name('files.download');
+Route::resource('/files','FileController');
+Route::get('/files/download/{storedfilename}','FileController@download')->name('files.download');
 
 Route::get('/profile','ProfileController@index')->name('profile');
 Route::get('/admin','AdminController@index')->name('admin');

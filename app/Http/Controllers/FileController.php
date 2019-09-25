@@ -14,7 +14,7 @@ use Illuminate\View\View;
 use Kris\LaravelFormBuilder\FormBuilder;
 use Symfony\Component\Console\Input\Input;
 
-class FilesController extends Controller
+class FileController extends Controller
 {
     const NOT_FOUND = 404;
     const STATUS_PRIVATE = 0;

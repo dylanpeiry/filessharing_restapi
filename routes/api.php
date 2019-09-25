@@ -16,7 +16,7 @@ use function foo\func;
 */
 
 Route::prefix('v1')->group(function(){
-    Route::group(['middleware' => 'auth:api'], function(){
-        Route::post('files','FilesController@store');
+    Route::group(['middleware' => 'auth:api,checkRole:*'], function(){
+        Route::post('files','FileController@store');
     });
 });
