@@ -10,8 +10,12 @@ class FileForm extends Form
     public function buildForm()
     {
         $this
-            ->add('file', Field::FILE)
-            ->add('fileName', Field::TEXT)
+            ->add('file', Field::FILE,[
+                'rules'=>'required'
+            ])
+            ->add('fileName', Field::TEXT,[
+                'rules'=>'required'
+            ])
             ->add('status', 'select', [
                 'choices' => [
                     '0' => 'Private',

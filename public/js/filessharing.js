@@ -27,6 +27,11 @@ $(document).ready(function () {
         })
     });
 
+
+    $(document).on('hidden.bs.modal', m_add_file, function () {
+        $(m_add_file).empty();
+    });
+
     $(document).on('submit', f_add_file, function (e) {
         let _token = $("input[name=_token]:first").val();
         let fileName = $("input[name=fileName]:first").val();
@@ -46,21 +51,26 @@ $(document).ready(function () {
 
     let utils = {
         showFile: (data) => {
-            let file = data.file;
-            let date = data.date;
-            console.log(utils.createStatusBadge(file.status));
-            let t = $(".mf-private > table > tbody");
-            let r = $(`<tr id="${file.id}"></tr>`);
-            let storedFileName = $(`<td>${utils.createFileLink(file.stored_file_name, file.file_name + '.' + file.type)}</td>`);
-            let status = $(`<td>${utils.createStatusBadge(file.status)}</td>`);
-            let timestamp = $(`<td>${date}</td>`);
-            let size = $(`<td>${file.size}</td>`);
-            let actions = $(`<td>${utils.createActionButtons()}</td>`);
+            if (data.uploaded) {
+                let file = data.file;
+                let date = data.date;
+                console.log(utils.createStatusBadge(file.status));
+                let t = $(".mf-private > table > tbody");
+                let r = $(`<tr id="${file.id}"></tr>`);
+                let storedFileName = $(`<td>${utils.createFileLink(file.stored_file_name, file.file_name + '.' + file.type)}</td>`);
+                let status = $(`<td>${utils.createStatusBadge(file.status)}</td>`);
+                let timestamp = $(`<td>${date}</td>`);
+                let size = $(`<td>${file.size}</td>`);
+                let actions = $(`<td>${utils.createActionButtons()}</td>`);
 
-            r.append(storedFileName, status, timestamp, size, actions);
-            t.prepend(r);
+                r.append(storedFileName, status, timestamp, size, actions);
+                t.prepend(r);
 
-            $(m_add_file).modal('hide');
+                $(m_add_file).modal('hide');
+                utils.notify('The file has been uploaded!', 'success');
+            }else{
+                utils.notify('The file couldn\'t be uploaded','danger');
+            }
         },
         createStatusBadge: (status) => {
             let badgeColor;
@@ -86,6 +96,23 @@ $(document).ready(function () {
         },
         createActionButtons: () => {
             return `<i title="Delete the file" class="fas fa-trash deletefile"></i>&nbsp;<i title="Share the file" class="fas fa-user-plus sharefile"></i>`;
+        },
+        notify: (message, type) => {
+            $.notify({
+                message: message,
+            },utils.notifyOptions(type))
+        },
+        notifyOptions: (type) => {
+            return {
+                type: type,
+                delay: 3000,
+                placement: {
+                    from: 'top',
+                    align: 'right'
+                },
+                allow_dismiss: false,
+                z_index: 2000
+            }
         }
     };
 });
