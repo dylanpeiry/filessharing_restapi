@@ -15,10 +15,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/files');
 });
 Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('/files','FileController');
 Route::get('/files/download/{storedfilename}','FileController@download')->name('files.download');
