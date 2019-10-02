@@ -5,6 +5,10 @@ $(document).ready(function () {
         show: true
     };
 
+    let select2_options = {
+        width: '100%',
+    };
+
     //The first letter represent which element it points to
     // M for modals
     // B for buttons
@@ -38,7 +42,7 @@ $(document).ready(function () {
             success: html => {
                 m_share_file.html(html);
                 m_share_file.modal(modal_options);
-                $('#shareWithUsers').select2();
+                $('#shareWithUsers').select2(select2_options);
             }
         })
     });

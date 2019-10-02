@@ -8,8 +8,19 @@
             </div>
             <div class="modal-body">
                 {!! form_start($form) !!}
-
-                {!! form_end($form) !!}
+                <div class="row">
+                    <div class="col-12">{!! form_label($form->users) !!}</div>
+                </div>
+                <div class="row">
+                    <div class="col-12">{!! form_widget($form->users) !!}</div>
+                </div>
+                <div class="row">
+                    <div class="col-12">{!! form_label($form->status) !!}</div>
+                </div>
+                <div class="row">
+                    <div class="col-12">{!! form_widget($form->status) !!}</div>
+                </div>
+                {!! form_end($form, false) !!}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
