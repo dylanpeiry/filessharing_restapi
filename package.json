@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.10.2",
+        "@ttskch/select2-bootstrap4-theme": "^1.2.3",
         "bootstrap4-notify": "^4.0.3"
     }
 }

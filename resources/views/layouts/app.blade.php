@@ -10,7 +10,8 @@
     <title>{{ config('app.name') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.min.js"></script>
     <script src="{{ asset('js/filessharing.js') }}" defer></script>
     <script src="{{ asset('js/utils.js') }}" defer></script>
 
@@ -19,6 +20,7 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/filessharing.css') }}" rel="stylesheet">
 </head>
@@ -90,7 +92,6 @@
         @yield('content')
     </main>
 
-    <div class="modal" id="m_add-file"></div>
 </div>
 </body>
 </html>

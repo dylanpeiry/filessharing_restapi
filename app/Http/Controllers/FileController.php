@@ -4,16 +4,15 @@ namespace App\Http\Controllers;
 
 use App\File;
 use App\Http\Forms\FileForm;
+use App\Helpers\Message;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
 use Kris\LaravelFormBuilder\FormBuilder;
-use mysql_xdevapi\Exception;
-use Symfony\Component\Console\Input\Input;
 
 class FileController extends Controller
 {
@@ -35,10 +34,11 @@ class FileController extends Controller
     public function index()
     {
         $id = Auth::user()->getAuthIdentifier();
-        $private_files = File::all()->where('id_owner', '=', $id)->sortByDesc('created_at');
-        $shared_files = File::all()->where('status', '=', self::STATUS_SHARED)->where('id_owner', '!=', $id);
-        $public_files = File::all()->where('status', '=', self::STATUS_PUBLIC)->where('id_owner', '!=', $id);;
-        return view('files', [
+        $files = File::all();
+        $private_files = $files->where('id_owner', '=', $id)->sortByDesc('created_at');
+        $shared_files = $files->where('status', '=', self::STATUS_SHARED)->where('id_owner', '!=', $id);
+        $public_files = $files->where('status', '=', self::STATUS_PUBLIC)->where('id_owner', '!=', $id);;
+        return view('pages.files', [
             'private_files' => $private_files,
             'shared_files' => $shared_files,
             'public_files' => $public_files
@@ -64,27 +64,43 @@ class FileController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
+     * @param FormBuilder $formBuilder
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request, FormBuilder $formBuilder)
     {
-        $data = $request->all();
-        /** @var UploadedFile $file */
-        $file = $data['file'];
-        if ($file !== 'undefined') {
-            $f = new File();
-            $f->stored_file_name = uniqid();
-            $f->file_name = $data['fileName'];
-            $f->size = $file->getSize();
-            $f->type = $file->getClientOriginalExtension();
-            $f->id_owner = Auth::user()->getAuthIdentifier();
-            $f->status = $data['status'];
-            $f->save();
-            $file->storeAs('files', $f->stored_file_name);
-            return response()->json(['uploaded' => true, 'file' => $f, 'date' => formatDate($f->created_at)], Response::HTTP_OK);
-        } else {
-            return response()->json(['uploaded' => false], Response::HTTP_OK);
+        $params = [
+            'uploaded'=>false,
+            'file'=>null,
+            'errors'=> []
+        ];
+        $form = $formBuilder->create(FileForm::class);
+        if ($form->isValid()) {
+            if ($request->hasFile('file')) {
+                $data = $request->all();
+                /** @var UploadedFile $file */
+                $file = $request->file('file');
+                $f = new File();
+                $f->stored_file_name = uniqid();
+                $f->file_name = $data['fileName'];
+                $f->size = $file->getSize();
+                $f->type = $file->getClientOriginalExtension();
+                $f->id_owner = Auth::user()->getAuthIdentifier();
+                $f->status = $data['status'];
+                $f->save();
+                $file->storeAs('files', $f->stored_file_name);
+                $params['uploaded'] = true;
+                $params['file'] = $f;
+                $params['date'] = formatDate($f->created_at);
+            }else{
+                $params['errors'] = [0=>[
+                    'message'=>Message::NO_SUBMITTED_FILE
+                ]];
+            }
+        }else{
+            $params['errors'] = [$form->getErrors()];
         }
+        return response()->json($params,Response::HTTP_OK);
     }
 
     /**

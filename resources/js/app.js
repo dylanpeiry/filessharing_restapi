@@ -6,7 +6,6 @@
 
 require('./bootstrap');
 require('bootstrap4-notify');
-
 window.Vue = require('vue');
 
 /**

@@ -13,6 +13,6 @@ class ProfileController extends Controller
         $this->middleware('auth');
     }
     public function index(Request $request){
-        return view('profile');
+        return view('pages.profile');
     }
 }

@@ -14,22 +14,39 @@ $(document).ready(function () {
     let b_add_file = $("#b_add-file");
     let f_add_file = $("#f_add-file");
 
+    let m_share_file = $("#m_share-file");
+
 
     $(document).on('click', '#fileUpload', function () {
         $.ajax({
             url: 'files/create',
             type: 'GET',
             dataType: 'html',
-            success: function (html) {
+            success: html => {
                 m_add_file.html(html);
                 m_add_file.modal(modal_options);
             }
         })
     });
 
+    $(document).on('click', '.sharefile', e => {
+        let id = $(e.target).parents('tr').prop('id');
+        $.ajax({
+            url: `files/${id}/share`,
+            type: 'GET',
+            dataType: 'HTML',
+            success: html => {
+                m_share_file.html(html);
+                m_share_file.modal(modal_options);
+                $('#shareWithUsers').select2();
+            }
+        })
+    });
 
-    $(document).on('hidden.bs.modal', m_add_file, function () {
-        $(m_add_file).empty();
+
+    //Remove modal on close
+    $(document).on('hidden.bs.modal', '.modal', function (e) {
+        $(e.target).empty();
     });
 
     $(document).on('submit', f_add_file, function (e) {
@@ -68,8 +85,8 @@ $(document).ready(function () {
 
                 $(m_add_file).modal('hide');
                 utils.notify('The file has been uploaded!', 'success');
-            }else{
-                utils.notify('The file couldn\'t be uploaded','danger');
+            } else {
+                utils.notify('The file couldn\'t be uploaded', 'danger');
             }
         },
         createStatusBadge: (status) => {
@@ -100,7 +117,7 @@ $(document).ready(function () {
         notify: (message, type) => {
             $.notify({
                 message: message,
-            },utils.notifyOptions(type))
+            }, utils.notifyOptions(type))
         },
         notifyOptions: (type) => {
             return {

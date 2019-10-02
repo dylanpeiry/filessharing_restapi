@@ -33,3 +33,12 @@ if (!function_exists('downloadLink')){
         return "<a href='$route' target='_blank'>$displayedName</a>";
     }
 }
+
+if (!function_exists('formatSize')){
+    /* From : https://stackoverflow.com/a/11860664 */
+    function formatSize($size){
+        $units = array('o', 'ko', 'Mo', 'Go');
+        $power = $size > 0 ? floor(log($size, 1024)) : 0;
+        return number_format($size / pow(1024, $power), 0, '.', ',') . ' [' . $units[$power] . ']';
+    }
+}

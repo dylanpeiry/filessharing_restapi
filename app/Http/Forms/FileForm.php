@@ -11,7 +11,7 @@ class FileForm extends Form
     {
         $this
             ->add('file', Field::FILE,[
-                'rules'=>'required'
+
             ])
             ->add('fileName', Field::TEXT,[
                 'rules'=>'required'
