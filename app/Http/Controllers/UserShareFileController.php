@@ -35,7 +35,8 @@ class UserShareFileController extends Controller
         $file = File::whereId($id)->first();
         $form = $formBuilder->create(UserShareFileForm::class, [
             'method' => 'POST',
-            'url' => route('files.share.store', ['id' => $id])
+            'url' => route('files.share.store', ['id' => $id]),
+            'model'=>$file
         ]);
         return view('files.share', compact(['form', 'file']));
     }
@@ -46,9 +47,11 @@ class UserShareFileController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$id)
     {
-        // Store the share
+        $users = $request->get('users');
+        //
+
     }
 
     /**

@@ -18,7 +18,7 @@ if (!function_exists('getStatusName')){
                 break;
         }
 
-        return "<span class='badge badge-$type'>$statusName</span>";
+        return "<span class='badge badge-$type status'>$statusName</span>";
     }
 }
 

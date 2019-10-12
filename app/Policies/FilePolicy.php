@@ -97,6 +97,6 @@ class FilePolicy
      * @param File $file
      */
     public function download(User $user, File $file){
-
+        
     }
 }

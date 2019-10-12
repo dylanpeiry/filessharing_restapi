@@ -18,5 +18,7 @@ use function foo\func;
 Route::prefix('v1')->group(function(){
     Route::group(['middleware' => 'auth:api,checkRole:*'], function(){
         Route::post('files','FileController@store');
+        Route::put('files/{id}/{status}','FileController@update');
+        Route::post('files/{id}/share','UserShareFileController@store')->name('files.share.store');
     });
 });

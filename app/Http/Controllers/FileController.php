@@ -70,9 +70,9 @@ class FileController extends Controller
     public function store(Request $request, FormBuilder $formBuilder)
     {
         $params = [
-            'uploaded'=>false,
-            'file'=>null,
-            'errors'=> []
+            'uploaded' => false,
+            'file' => null,
+            'errors' => []
         ];
         $form = $formBuilder->create(FileForm::class);
         if ($form->isValid()) {
@@ -92,15 +92,15 @@ class FileController extends Controller
                 $params['uploaded'] = true;
                 $params['file'] = $f;
                 $params['date'] = formatDate($f->created_at);
-            }else{
-                $params['errors'] = [0=>[
-                    'message'=>Message::NO_SUBMITTED_FILE
+            } else {
+                $params['errors'] = [0 => [
+                    'message' => Message::NO_SUBMITTED_FILE
                 ]];
             }
-        }else{
+        } else {
             $params['errors'] = [$form->getErrors()];
         }
-        return response()->json($params,Response::HTTP_OK);
+        return response()->json($params, Response::HTTP_OK);
     }
 
     /**
@@ -129,12 +129,25 @@ class FileController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param File $file
-     * @return Response
+     * @param $id
+     * @return void
      */
-    public function update(Request $request, File $file)
+    public function update(Request $request, $id,$status)
     {
-        //
+        switch ($status){
+            case 0:
+            case 1:
+            case 2:
+                break;
+            default:
+                $status = 0;
+                break;
+        }
+        /** @var File $file */
+        $file = File::whereId($id)->first();
+        $file->status = $status;
+        $file->save();
+        return response()->json(['updated' => true], Response::HTTP_OK);
     }
 
     /**

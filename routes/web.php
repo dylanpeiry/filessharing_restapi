@@ -20,10 +20,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::resource('/files','FileController');
-Route::get('/files/download/{storedfilename}','FileController@download')->name('files.download');
+Route::get('/files/download/{storedfilename}','FileController@download')->name('files.download')->middleware('can:download,storedfilename');
 
 Route::get('/files/{id}/share','UserShareFileController@create')->name('files.share.create');
-Route::post('/files/{id}/share','UserShareFileController@store')->name('files.share.store');
 
 Route::get('/profile','ProfileController@index')->name('profile');
 Route::get('/admin','AdminController@index')->name('admin');

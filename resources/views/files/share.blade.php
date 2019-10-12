@@ -8,6 +8,7 @@
             </div>
             <div class="modal-body">
                 {!! form_start($form) !!}
+                {!! form_widget($form->id) !!}
                 <div class="row">
                     <div class="col-12">{!! form_label($form->users) !!}</div>
                 </div>

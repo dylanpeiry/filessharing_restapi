@@ -18,7 +18,7 @@
         <td>{!!getStatusName($file->status)!!}</td>
         <td>{{formatDate($file->created_at)}}</td>
         <td>{{formatSize($file->size)}}</td>
-        @if($file->status === 0)
+        @if($status === 'private')
             <td>
                 <i class="fas fa-trash deletefile" title="Delete the file"></i>
                 &nbsp;

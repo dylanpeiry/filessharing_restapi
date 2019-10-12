@@ -20,6 +20,9 @@ $(document).ready(function () {
 
     let m_share_file = $("#m_share-file");
 
+    let share_with_users = "#shareWithUsers";
+    let status = "#status";
+
 
     $(document).on('click', '#fileUpload', function () {
         $.ajax({
@@ -45,6 +48,58 @@ $(document).ready(function () {
                 $('#shareWithUsers').select2(select2_options);
             }
         })
+    });
+
+    $(document).on('change', '#shareWithUsers', e => {
+        let status = $(status).val();
+        let users = $(share_with_users).val();
+        let id = $("input[name=id]").val();
+        console.log(id);
+
+
+    });
+
+    $(document).on('change', status, e => {
+        let idx = $(status).val();
+        let disableShare;
+        switch (idx) {
+            case '0':
+                disableShare = true;
+                break;
+            case '1':
+                disableShare = false;
+                break;
+            case '2':
+                disableShare = true;
+                break;
+        }
+        utils.disableShare(disableShare)
+    });
+
+    $(document).on('click', '#share', e => {
+        let users = $(share_with_users).val();
+        let id = $("input[name=id]").val();
+        let s = $(status).val();
+        let sName = $(status + ' option:selected').text();
+
+        let userShare = new FormData();
+        userShare.append('users', users);
+        axios.post(`/api/v1/files/${id}/share`, userShare, {
+            headers: {'content-type': 'x-www-form-urlencoded'}
+        }).then(res => console.log(res));
+        axios.put(`/api/v1/files/${id}/${s}`, null, {
+            headers: {'content-type': 'x-www-form-urlencoded'}
+        }).then(res => {
+            if (res.data.updated) {
+                let badge = $("tr#" + id + " .status");
+                m_share_file.modal('hide');
+                badge.text(sName);
+                badge.removeClass();
+                badge.addClass(utils.statusColor(s));
+            }
+
+        });
+
     });
 
 
@@ -134,6 +189,17 @@ $(document).ready(function () {
                 allow_dismiss: false,
                 z_index: 2000
             }
+        },
+        disableShare: (disabled) => {
+            $(share_with_users).attr('disabled', disabled);
+        },
+        statusColor: status => {
+            if (status === '0')
+                return 'badge badge-danger status';
+            if (status === '1')
+                return 'badge badge-warning status';
+            if (status === '2')
+                return 'badge badge-primary status';
         }
     };
 });
